@@ -3,17 +3,13 @@ let loginEffect;
 /* CONFIGURATION 
    Using the keys you provided in the prompt.
 */
-const CLIENT_ID = '1019348840768-gc21gf6coj06iu6cgs1764h4fi8g6ko8.apps.googleusercontent.com';
-const API_KEY = 'AIzaSyA8LQWrpvCpJJa_P-Qg2_sxTJJXAh59Dl0';
+// Keys are now loaded from config.js
+
 const DISCOVERY_DOC_SHEETS = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
 // ADDED: Discovery doc for user info
 const DISCOVERY_DOC_PEOPLE = 'https://www.googleapis.com/discovery/v1/apis/oauth2/v3/rest';
 // UPDATED: Add 'profile' scope to get user info
 const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly profile';
-
-// TODO: PASTE YOUR SHEET ID HERE FROM STEP 1
-const SPREADSHEET_ID = '1GTSHPoVzHdkIO12t5ZS8abn_KmPS8Cxx47tb4e8Oxwg';
-const RANGE = 'Data_Template!A2:F'; // Assumes your sheet name is Data_Template and data starts at A2
 
 let tokenClient;
 let gapiInited = false;
@@ -26,7 +22,7 @@ function gapiLoaded() {
 
 async function intializeGapiClient() {
     await gapi.client.init({
-        apiKey: API_KEY,
+        apiKey: CONFIG.API_KEY,
         // Load both Sheets and User Info discovery docs
         discoveryDocs: [DISCOVERY_DOC_SHEETS, DISCOVERY_DOC_PEOPLE],
     });
@@ -38,7 +34,7 @@ async function intializeGapiClient() {
 
 function gisLoaded() {
     tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: CLIENT_ID,
+        client_id: CONFIG.CLIENT_ID,
         scope: SCOPES,
         callback: '', // defined later
     });
@@ -126,8 +122,8 @@ async function loadSheetData() {
     let response;
     try {
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: SPREADSHEET_ID,
-            range: RANGE,
+            spreadsheetId: CONFIG.SPREADSHEET_ID,
+            range: CONFIG.RANGE,
         });
     } catch (err) {
         console.error(err);
