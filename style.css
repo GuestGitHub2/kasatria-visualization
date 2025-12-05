@@ -1,0 +1,330 @@
+/* style.css - COMPLETE REPLACEMENT */
+
+body {
+    background-color: #050505;
+    /* Deep black/grey */
+    margin: 0;
+    /* Switch to a nicer font for the whole app */
+    font-family: 'Montserrat', sans-serif;
+    overflow: hidden;
+}
+
+/* --- NEW HEADER STYLES --- */
+#app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    /* Dark, semi-transparent background */
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    /* Glass effect */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 1001;
+    /* Highest priority */
+}
+
+.header-logo {
+    height: 30px;
+    /* Adjust based on your actual logo file */
+    width: auto;
+}
+
+#user-profile {
+    display: flex;
+    align-items: center;
+}
+
+#user-name {
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    margin-right: 15px;
+}
+
+#user-photo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    /* Circular photo */
+    border: 2px solid #fff;
+}
+
+/* --- LOGIN OVERLAY --- */
+#login-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Dark Sci-Fi Gradient */
+    background: radial-gradient(circle at 50% 50%, #1a1f25 0%, #000000 100%);
+
+    /* FIX: Changed from 999 to 2000 so it sits ABOVE the menu buttons */
+    z-index: 2000;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-box {
+    /* Glassmorphism Effect */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    max-width: 320px;
+    width: 100%;
+}
+
+
+/* NEW ICON */
+.icon-wrapper {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+/* NEW LOGO STYLES */
+.login-brand-logo {
+    max-width: 200px;
+    height: auto;
+    /* No blend mode or invert needed anymore! */
+    filter: invert(1);
+    /* Keep this ONLY if the logo is black and you need it white. */
+}
+
+#login-overlay h2 {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 24px;
+    margin: 0 0 10px;
+    letter-spacing: 1px;
+}
+
+.login-box p {
+    color: #a0a0a0;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 30px;
+    z-index: 10;
+    position: relative;
+}
+
+/* --- BUTTON STYLING --- */
+#authorize_button {
+    background-color: #ffffff;
+    color: #3c4043;
+    border: none;
+    border-radius: 24px;
+    /* Pill shape */
+    height: 48px;
+    padding: 0 24px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+    /* Full width of box */
+    box-sizing: border-box;
+}
+
+#authorize_button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+.g-logo {
+    margin-right: 12px;
+}
+
+/* --- MENU (Buttons at bottom) --- */
+#menu {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    /* INCREASED Z-INDEX to sit above 3D scene */
+    z-index: 1000;
+    pointer-events: none;
+    /* Let clicks pass through empty space */
+}
+
+/* STYLE FOR MENU BUTTONS TO LOOK BETTER */
+#menu button {
+    pointer-events: auto;
+    /* Buttons catch clicks */
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+#menu button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+}
+
+/* --- 3D ELEMENTS --- */
+.element {
+    width: 120px;
+    height: 160px;
+    background-color: rgba(0, 10, 20, 0.85);
+    /* Darker Blue tint */
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    box-shadow: 0px 0px 12px rgba(0, 229, 255, 0.5);
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    transition: transform 0.3s;
+    backface-visibility: hidden;
+    /* Ensure this is kept from previous fix */
+}
+
+.element:hover {
+    box-shadow: 0px 0px 20px rgba(0, 229, 255, 0.8);
+    border-color: rgba(0, 229, 255, 0.8);
+    z-index: 1000;
+    /* Bring to front on hover if possible */
+}
+
+.element .top-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.element .country,
+.element .age {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.element .photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    /* Back to square with soft corners */
+    margin: 0 auto;
+    background-size: cover;
+    background-position: center;
+    background-color: #222;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.element .info {
+    margin-top: 8px;
+}
+
+.element .name {
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+
+.element .interest {
+    font-size: 9px;
+    color: #00e5ff;
+    /* Cyan accent */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- NAVIGATION CONTROLS GUIDE --- */
+#controls-guide {
+    position: absolute;
+    bottom: 30px;
+    /* Aligned with the bottom menu buttons */
+    left: 30px;
+    z-index: 1000;
+    /* Sit above the 3D scene */
+
+    /* Glass Effect */
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+
+    padding: 15px;
+    width: 140px;
+    pointer-events: none;
+    /* Let clicks pass through (optional) */
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+#controls-guide h3 {
+    margin: 0 0 12px 0;
+    font-size: 10px;
+    font-weight: 700;
+    color: #00e5ff;
+    /* Cyan accent */
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 5px;
+}
+
+.control-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 10px;
+}
+
+.control-row:last-child {
+    margin-bottom: 0;
+}
+
+.control-row .key {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 9px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.control-row .action {
+    color: #a0a0a0;
+    font-weight: 500;
+}
