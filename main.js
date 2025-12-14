@@ -144,7 +144,7 @@ async function loadSheetData() {
 // 3. THREE.JS VISUALIZATION
 const table = []; // Will hold the raw data objects
 const objects = []; // Will hold the 3D objects
-const targets = { table: [], sphere: [], helix: [], grid: [] };
+const targets = { table: [], sphere: [], helix: [], grid: [], pyramid: [] };
 
 let camera, scene, renderer, controls;
 
@@ -286,6 +286,67 @@ function initThreeJS(data) {
         targets.grid.push(object);
     }
 
+    // 5. PYRAMID (Tetrahedron)
+    // A tetrahedron has 4 vertices. We will create 4 triangular faces.
+    // We calculate 4 corners of a regular tetrahedron.
+    const r = 1000; // Radius/Size of the pyramid
+    const corners = [
+        new THREE.Vector3(r, r, r),
+        new THREE.Vector3(-r, -r, r),
+        new THREE.Vector3(-r, r, -r),
+        new THREE.Vector3(r, -r, -r)
+    ];
+
+    // We define the 4 triangular faces by connecting corners
+    // Face 1: 0-1-2, Face 2: 0-2-3, Face 3: 0-3-1, Face 4: 1-3-2
+    const faces = [
+        [corners[0], corners[1], corners[2]],
+        [corners[0], corners[2], corners[3]],
+        [corners[0], corners[3], corners[1]],
+        [corners[1], corners[3], corners[2]]
+    ];
+
+    let objIndex = 0;
+    // Distribute objects across the 4 faces
+    for (let f = 0; f < 4; f++) {
+        const A = faces[f][0];
+        const B = faces[f][1];
+        const C = faces[f][2];
+
+        // Arrange in rows (1 item, then 2 items, then 3...) to form a triangle
+        // We have roughly 160 items, so ~40 items per face.
+        // Rows: 1+2+3+4+5+6+7+8 = 36 items. Approx 8 or 9 rows deep.
+
+        let rowLimit = 9;
+        for (let row = 0; row <= rowLimit; row++) {
+            for (let col = 0; col <= row; col++) {
+                if (objIndex >= objects.length) break;
+
+                const object = new THREE.Object3D();
+
+                // Barycentric coordinates to interpolate position on the triangle
+                // We move from top (A) down to base (B-C)
+                const s = row / rowLimit; // 0 to 1 (vertical progress)
+                const t = (col / (row + 1)) || 0.5; // Horizontal progress inside the row
+
+                // Interpolate
+                // P = A + s * ((B + (C-B)*t) - A) ... roughly
+                // Cleaner Vector math:
+                const p1 = new THREE.Vector3().lerpVectors(B, C, col / (row + 1 || 1)); // Point on base line
+                const pos = new THREE.Vector3().lerpVectors(A, p1, s);
+
+                object.position.copy(pos);
+
+                // Make object look outwards from the center of the pyramid (0,0,0)
+                // object.lookAt(new THREE.Vector3(0,0,0)); // Look Inward
+                object.lookAt(object.position.clone().multiplyScalar(2)); // Look Outward
+
+                targets.pyramid.push(object);
+                objIndex++;
+            }
+        }
+    }
+
     // --- RENDERER & CONTROLS ---
     renderer = new THREE.CSS3DRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -311,6 +372,7 @@ function initThreeJS(data) {
     document.getElementById('sphere').addEventListener('click', () => transform(targets.sphere, 2000));
     document.getElementById('helix').addEventListener('click', () => transform(targets.helix, 2000));
     document.getElementById('grid').addEventListener('click', () => transform(targets.grid, 2000));
+    document.getElementById('pyramid').addEventListener('click', () => transform(targets.pyramid, 2000));
 
     window.addEventListener('resize', onWindowResize, false);
 
